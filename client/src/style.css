@@ -1,0 +1,503 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn-vue/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: 'Inter', sans-serif;
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* ===== Tema claro e escuro ===== */
+:root {
+  --nt-siri-backdrop-blur: 5px;
+  --nt-siri-travel-blur: 9px;
+  --nt-siri-backdrop-tint: 0.12;
+  --nt-siri-motion-duration: 720ms;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: hsl(0, 0%, 9%);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* Material Design 3: durações e curvas */
+  --md-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --md-ease-decel: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --md-ease-accel: cubic-bezier(0.3, 0, 0.8, 0.15);
+  --md-dur-short: 200ms;
+  --md-dur-medium: 300ms;
+  --md-dur-long: 500ms;
+
+  /* Curva usada pelas animações do projeto */
+  --nt-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: hsl(0, 0%, 91%);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#app {
+  width: 100%;
+  text-align: left;
+}
+
+/* =====================================================================
+   MENUS (Select, Dropdown, Popover): entrada e saída com blur
+   ===================================================================== */
+@keyframes nt-menu-in {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+
+@keyframes nt-menu-out {
+  from {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(-6px) scale(0.97);
+  }
+}
+
+/* Classe direta: coloque em qualquer SelectContent / DropdownContent */
+.nt-menu[data-state='open'],
+.nt-menu[data-state='open'] {
+  animation: nt-menu-in 220ms var(--nt-ease-out) both;
+  transform-origin: var(--reka-select-content-transform-origin, top);
+}
+.nt-menu[data-state='closed'] {
+  animation: nt-menu-out 160ms ease-in both;
+  transform-origin: var(--reka-select-content-transform-origin, top);
+}
+
+/* Seletor por atributo: cobre o listbox do Select mesmo sem a classe */
+[role='listbox'][data-state='open'] {
+  animation: nt-menu-in 220ms var(--nt-ease-out) both;
+  transform-origin: var(--reka-select-content-transform-origin, top);
+}
+[role='listbox'][data-state='closed'] {
+  animation: nt-menu-out 160ms ease-in both;
+  transform-origin: var(--reka-select-content-transform-origin, top);
+}
+
+/* =====================================================================
+   BLUR EM QUALQUER ELEMENTO QUE SE TRANSFORMA
+   ===================================================================== */
+.nt-blur-in {
+  animation: nt-menu-in 240ms var(--nt-ease-out) both;
+}
+.nt-blur-out {
+  animation: nt-menu-out 180ms ease-in both;
+}
+
+/* Transição suave com blur leve enquanto o elemento muda de estado */
+.nt-morph {
+  transition-property: transform, opacity, filter, background-color, box-shadow;
+  transition-duration: 300ms;
+  transition-timing-function: var(--nt-ease-out);
+}
+.nt-morph:active,
+.nt-morph:focus-visible {
+  filter: blur(0.5px);
+}
+
+/* =====================================================================
+   MATERIAL DESIGN 3
+   ===================================================================== */
+.md-ripple-host {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.md-state {
+  position: relative;
+}
+.md-state::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--md-dur-short) var(--md-ease-standard);
+}
+.md-state:hover::after {
+  opacity: 0.08;
+}
+.md-state:focus-visible::after,
+.md-state:active::after {
+  opacity: 0.12;
+}
+
+.md-card {
+  transition:
+    box-shadow var(--md-dur-medium) var(--md-ease-standard),
+    transform var(--md-dur-medium) var(--md-ease-standard);
+}
+.md-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.08), 0 1px 3px rgb(0 0 0 / 0.06);
+}
+
+/* Ripple criado pela diretiva v-ripple */
+.md-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.16;
+  transform: scale(0);
+  pointer-events: none;
+  animation: md-ripple 600ms var(--md-ease-standard) forwards;
+}
+@keyframes md-ripple {
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/* Troca de página: fade through */
+.md-fade-through-enter-active {
+  transition:
+    opacity var(--md-dur-medium) var(--md-ease-decel) 90ms,
+    transform var(--md-dur-medium) var(--md-ease-decel) 90ms;
+}
+.md-fade-through-leave-active {
+  transition:
+    opacity 90ms var(--md-ease-accel),
+    transform 90ms var(--md-ease-accel);
+}
+.md-fade-through-enter-from {
+  opacity: 0;
+  transform: translateY(12px) scale(0.98);
+}
+.md-fade-through-leave-to {
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+/* Listas: entrada, saída e reordenação */
+.md-list-enter-active {
+  transition:
+    opacity var(--md-dur-medium) var(--md-ease-decel),
+    transform var(--md-dur-medium) var(--md-ease-decel);
+}
+.md-list-leave-active {
+  transition:
+    opacity 150ms var(--md-ease-accel),
+    transform 150ms var(--md-ease-accel);
+}
+.md-list-enter-from {
+  opacity: 0;
+  transform: translateY(-12px);
+}
+.md-list-leave-to {
+  opacity: 0;
+  transform: translateX(24px);
+}
+.md-list-move {
+  transition: transform var(--md-dur-medium) var(--md-ease-standard);
+}
+
+/* Diálogos: escala e fade (use com o Dialog do shadcn) */
+@keyframes md-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes md-dialog-out {
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+.md-dialog[data-state='open'] {
+  animation: md-dialog-in var(--md-dur-medium) var(--md-ease-decel) both;
+}
+.md-dialog[data-state='closed'] {
+  animation: md-dialog-out 150ms var(--md-ease-accel) both;
+}
+
+/* =====================================================================
+   ACESSIBILIDADE
+   Quem desativou animações no sistema vê o conteúdo sem movimento.
+   ===================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* =====================================================================
+   CALENDÁRIO (DatePicker)
+   ===================================================================== */
+.nt-cal-wrap {
+  min-width: 18rem;
+}
+
+.nt-cal button[data-selected] {
+  animation: nt-day-pop 280ms var(--nt-ease-out);
+}
+@keyframes nt-day-pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.3;
+    filter: blur(2px);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* Dias: toque ao passar o mouse e ao clicar */
+.nt-cal td button {
+  transition:
+    transform 160ms var(--nt-ease-out),
+    background-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+  border-radius: 0.6rem;
+}
+.nt-cal td button:hover:not([data-disabled]):not([data-selected]) {
+  transform: scale(1.08);
+  background-color: var(--accent);
+}
+.nt-cal td button:active:not([data-disabled]) {
+  transform: scale(0.92);
+}
+
+/* Dias de outros meses: levemente desfocados e mais discretos */
+.nt-cal td button[data-outside-view] {
+  filter: blur(0.6px);
+  opacity: 0.55;
+}
+
+/* Dia de hoje: anel discreto */
+.nt-cal td button[data-today]:not([data-selected]) {
+  box-shadow: inset 0 0 0 1.5px var(--primary);
+  font-weight: 600;
+}
+
+/* Cabeçalho do mês e setas */
+.nt-cal [data-slot='calendar-heading'],
+.nt-cal .nt-heading {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.nt-cal button[aria-label*='anterior'],
+.nt-cal button[aria-label*='próximo'],
+.nt-cal button[aria-label*='Previous'],
+.nt-cal button[aria-label*='Next'] {
+  transition: transform 160ms var(--nt-ease-out), background-color 160ms ease;
+  border-radius: 0.5rem;
+}
+.nt-cal button[aria-label*='anterior']:hover,
+.nt-cal button[aria-label*='próximo']:hover,
+.nt-cal button[aria-label*='Previous']:hover,
+.nt-cal button[aria-label*='Next']:hover {
+  transform: scale(1.12);
+  background-color: var(--accent);
+}
+
+/* Botões de texto do rodapé (Limpar, Hoje) */
+.nt-link-btn {
+  transition: transform 150ms var(--nt-ease-out), color 150ms ease;
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.5rem;
+  margin: -0.25rem -0.5rem;
+}
+.nt-link-btn:hover {
+  transform: translateY(-1px);
+}
+.nt-link-btn:active {
+  transform: scale(0.95);
+}
+
+/* Botão que abre o calendário */
+.nt-date-trigger {
+  transition:
+    transform 160ms var(--nt-ease-out),
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+.nt-date-trigger:hover {
+  transform: translateY(-1px);
+}
+.nt-date-trigger:active {
+  transform: scale(0.97);
+}
+
+/* =====================================================================
+   CALENDÁRIO: cantos mais arredondados
+   ===================================================================== */
+.nt-cal-wrap {
+  border-radius: 2rem;
+}
+
+/* Dias: formato de pílula */
+.nt-cal-wrap .nt-cal td button,
+.nt-cal-wrap .nt-cal td [role='gridcell'] > button {
+  border-radius: 9999px;
+}
+
+/* Dia selecionado e dia de hoje: círculo completo */
+.nt-cal-wrap .nt-cal td button[data-selected],
+.nt-cal-wrap .nt-cal td button[data-today] {
+  border-radius: 9999px;
+}
+
+/* Setas de navegação do mês: círculo */
+.nt-cal-wrap .nt-cal button[aria-label*='anterior'],
+.nt-cal-wrap .nt-cal button[aria-label*='próximo'],
+.nt-cal-wrap .nt-cal button[aria-label*='Previous'],
+.nt-cal-wrap .nt-cal button[aria-label*='Next'] {
+  border-radius: 9999px;
+}
+
+/* Botões Limpar e Hoje: cápsulas */
+.nt-link-btn {
+  border-radius: 9999px;
+  padding: 0.35rem 0.85rem;
+  margin: -0.35rem -0.85rem;
+}
+
+/* Rodapé do calendário: bordas arredondadas nas pontas */
+.nt-cal-wrap > div:last-child {
+  border-bottom-left-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+}

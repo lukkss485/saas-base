@@ -1,0 +1,153 @@
+﻿
+===== ARQUIVO: C:\Users\Lucas\saas-base\client\src\components\ui\tabs\index.ts =====
+import type { VariantProps } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
+
+export { default as Tabs } from './Tabs.vue'
+export { default as TabsContent } from './TabsContent.vue'
+export { default as TabsList } from './TabsList.vue'
+export { default as TabsTrigger } from './TabsTrigger.vue'
+
+export const tabsListVariants = cva(
+  'rounded-2xl p-[3px] group-data-horizontal/tabs:h-8 data-[variant=line]:rounded-none group-data-vertical/tabs:p-1 group/tabs-list inline-flex w-fit items-center justify-center text-muted-foreground group-data-vertical/tabs:h-fit group-data-vertical/tabs:flex-col',
+  {
+    variants: {
+      variant: {
+        default: 'bg-muted',
+        line: 'gap-1 bg-transparent',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  },
+)
+
+export type TabsListVariants = VariantProps<typeof tabsListVariants>
+
+
+
+
+===== ARQUIVO: C:\Users\Lucas\saas-base\client\src\components\ui\tabs\Tabs.vue =====
+<script setup lang="ts">
+import type { TabsRootEmits, TabsRootProps } from 'reka-ui'
+import type { HTMLAttributes } from 'vue'
+import { reactiveOmit } from '@vueuse/core'
+import { cn } from 'cn'
+import { TabsRoot, useForwardPropsEmits } from 'reka-ui'
+
+const props = defineProps<TabsRootProps & { class?: HTMLAttributes['class'] }>()
+const emits = defineEmits<TabsRootEmits>()
+
+const delegatedProps = reactiveOmit(props, 'class')
+const forwarded = useForwardPropsEmits(delegatedProps, emits)
+</script>
+
+<template>
+  <TabsRoot
+    v-slot="slotProps"
+    data-slot="tabs"
+    :data-orientation="forwarded.orientation || 'horizontal'"
+    v-bind="forwarded"
+    :class="cn('gap-2 group/tabs flex data-horizontal:flex-col', props.class)"
+  >
+    <slot v-bind="slotProps" />
+  </TabsRoot>
+</template>
+
+
+
+
+===== ARQUIVO: C:\Users\Lucas\saas-base\client\src\components\ui\tabs\TabsContent.vue =====
+<script setup lang="ts">
+import type { TabsContentProps } from 'reka-ui'
+import type { HTMLAttributes } from 'vue'
+import { reactiveOmit } from '@vueuse/core'
+import { cn } from 'cn'
+import { TabsContent } from 'reka-ui'
+
+const props = defineProps<TabsContentProps & { class?: HTMLAttributes['class'] }>()
+
+const delegatedProps = reactiveOmit(props, 'class')
+</script>
+
+<template>
+  <TabsContent
+    data-slot="tabs-content"
+    :class="cn('text-sm flex-1 outline-none', props.class)"
+    v-bind="delegatedProps"
+  >
+    <slot />
+  </TabsContent>
+</template>
+
+
+
+
+===== ARQUIVO: C:\Users\Lucas\saas-base\client\src\components\ui\tabs\TabsList.vue =====
+<script setup lang="ts">
+import type { TabsListProps } from 'reka-ui'
+import type { HTMLAttributes } from 'vue'
+import type { TabsListVariants } from '.'
+import { reactiveOmit } from '@vueuse/core'
+import { cn } from 'cn'
+import { TabsList } from 'reka-ui'
+import { tabsListVariants } from '.'
+
+const props = withDefaults(defineProps<TabsListProps & {
+  class?: HTMLAttributes['class']
+  variant?: TabsListVariants['variant']
+}>(), {
+  variant: 'default',
+})
+
+const delegatedProps = reactiveOmit(props, 'class', 'variant')
+</script>
+
+<template>
+  <TabsList
+    data-slot="tabs-list"
+    :data-variant="variant"
+    v-bind="delegatedProps"
+    :class="cn(tabsListVariants({ variant }), props.class)"
+  >
+    <slot />
+  </TabsList>
+</template>
+
+
+
+
+===== ARQUIVO: C:\Users\Lucas\saas-base\client\src\components\ui\tabs\TabsTrigger.vue =====
+<script setup lang="ts">
+import type { TabsTriggerProps } from 'reka-ui'
+import type { HTMLAttributes } from 'vue'
+import { reactiveOmit } from '@vueuse/core'
+import { cn } from 'cn'
+import { TabsTrigger, useForwardProps } from 'reka-ui'
+
+const props = defineProps<TabsTriggerProps & { class?: HTMLAttributes['class'] }>()
+
+const delegatedProps = reactiveOmit(props, 'class')
+
+const forwardedProps = useForwardProps(delegatedProps)
+</script>
+
+<template>
+  <TabsTrigger
+    data-slot="tabs-trigger"
+    :class="cn(
+      'gap-1.5 rounded-2xl border border-transparent! px-1.5 py-0.5 text-sm font-medium group-data-vertical/tabs:px-3 group-data-vertical/tabs:py-0.5 [&_svg:not([class*=size-])]:size-4 relative inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center whitespace-nowrap text-foreground/60 transition-all group-data-vertical/tabs:w-full group-data-vertical/tabs:justify-start hover:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 dark:text-muted-foreground dark:hover:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0',
+      'group-data-[variant=line]/tabs-list:bg-transparent group-data-[variant=line]/tabs-list:data-active:bg-transparent dark:group-data-[variant=line]/tabs-list:data-active:border-transparent dark:group-data-[variant=line]/tabs-list:data-active:bg-transparent',
+      'data-active:bg-background data-active:text-foreground dark:data-active:border-input dark:data-active:bg-input/30 dark:data-active:text-foreground',
+      'after:absolute after:bg-foreground after:opacity-0 after:transition-opacity group-data-horizontal/tabs:after:inset-x-0 group-data-horizontal/tabs:after:bottom-[-5px] group-data-horizontal/tabs:after:h-0.5 group-data-vertical/tabs:after:inset-y-0 group-data-vertical/tabs:after:-right-1 group-data-vertical/tabs:after:w-0.5 group-data-[variant=line]/tabs-list:data-active:after:opacity-100',
+      props.class,
+    )"
+    v-bind="forwardedProps"
+  >
+    <slot />
+  </TabsTrigger>
+</template>
+
+
+
