@@ -1,54 +1,34 @@
-
 <template>
   <TooltipProvider>
-    <div
-      :class="[
-        'min-h-screen bg-white text-neutral-900 transition-colors duration-300 dark:bg-neutral-900 dark:text-neutral-100',
-        'p-2.5 md:p-3',
-        navigationLayout === 'attached' ? 'md:p-0' : '',
-      ]"
-    >
+    <div :class="[
+      'min-h-screen bg-white text-neutral-900 transition-colors duration-300 dark:bg-neutral-900 dark:text-neutral-100',
+      'p-2.5 md:p-3',
+      navigationLayout === 'attached' ? 'md:p-0' : '',
+    ]">
       <!-- Fundo da gaveta mobile -->
       <Transition name="nt-fade">
-        <div
-          v-if="mobileOpen"
-          class="nt-sidebar-backdrop fixed inset-0 z-[55] md:hidden"
-          @click="mobileOpen = false"
-        />
+        <div v-if="mobileOpen" class="nt-sidebar-backdrop fixed inset-0 z-[55] md:hidden" @click="mobileOpen = false" />
       </Transition>
 
-      <div
-        :class="[
-          'flex min-h-full md:min-h-[calc(100vh-1.5rem)]',
-          navigationLayout === 'attached' ? 'gap-0 md:min-h-screen' : 'gap-3',
-        ]"
-      >
+      <div :class="[
+        'flex min-h-full md:min-h-[calc(100vh-1.5rem)]',
+        navigationLayout === 'attached' ? 'gap-0 md:min-h-screen' : 'gap-3',
+      ]">
         <!-- SIDEBAR LIQUID GLASS -->
-        <aside
-          v-if="!isDesktop || isSidebarLayout"
-          :class="[
-            'nt-sidebar nt-liquid nt-liquid--panel z-[50] flex w-56 shrink-0 flex-col overflow-hidden p-5',
-            'fixed inset-y-2.5 left-2.5 md:sticky md:inset-auto md:self-start',
-            navigationLayout === 'attached'
-              ? 'nt-liquid--attached md:top-0 md:h-screen md:border-r md:border-neutral-200 dark:md:border-neutral-800'
-              : 'md:top-3 md:h-[calc(100vh-1.5rem)]',
-            mobileOpen
-              ? 'visible translate-x-0'
-              : 'invisible translate-x-[-110%] md:visible md:translate-x-0',
-            iconOnly ? 'md:w-16 md:p-3' : '',
-          ]"
-        >
+        <aside v-if="!isDesktop || isSidebarLayout" :class="[
+          'nt-sidebar nt-liquid nt-liquid--panel z-[50] flex w-56 shrink-0 flex-col overflow-hidden p-5',
+          'fixed inset-y-2.5 left-2.5 md:sticky md:inset-auto md:self-start',
+          navigationLayout === 'attached'
+            ? 'nt-liquid--attached md:top-0 md:h-screen md:border-r md:border-neutral-200 dark:md:border-neutral-800'
+            : 'md:top-3 md:h-[calc(100vh-1.5rem)]',
+          mobileOpen
+            ? 'visible translate-x-0'
+            : 'invisible translate-x-[-110%] md:visible md:translate-x-0',
+          iconOnly ? 'md:w-16 md:p-3' : '',
+        ]">
           <div class="flex w-full min-w-0 flex-1 flex-col overflow-y-auto overflow-x-hidden">
-            <RouterLink
-              to="/dashboard"
-              class="mb-8 flex h-10 items-center"
-              @click="mobileOpen = false"
-            >
-              <img
-                src="/logo.png"
-                alt="logo"
-                class="h-10 w-10 shrink-0 rounded-md"
-              />
+            <RouterLink to="/dashboard" class="mb-8 flex h-10 items-center" @click="mobileOpen = false">
+              <img src="/logo.png" alt="logo" class="h-10 w-10 shrink-0 rounded-md" />
 
               <span :class="[labelClass, 'font-semibold']">
                 nt-life
@@ -59,21 +39,13 @@
             <nav class="grid gap-1 text-sm">
               <Tooltip v-for="item in items" :key="item.to">
                 <TooltipTrigger as-child>
-                  <RouterLink
-                    :to="item.to"
-                    :class="navClass(isActive(item.to))"
-                    @click="mobileOpen = false"
-                  >
+                  <RouterLink :to="item.to" :class="navClass(isActive(item.to))" @click="mobileOpen = false">
                     <component :is="item.icon" class="h-4 w-4 shrink-0" />
                     <span :class="labelClass">{{ item.label }}</span>
                   </RouterLink>
                 </TooltipTrigger>
 
-                <TooltipContent
-                  v-if="iconOnly"
-                  side="right"
-                  :side-offset="8"
-                >
+                <TooltipContent v-if="iconOnly" side="right" :side-offset="8">
                   {{ item.label }}
                 </TooltipContent>
               </Tooltip>
@@ -82,24 +54,13 @@
             <div class="mt-auto space-y-4 pt-6">
               <div class="flex flex-col gap-1 border-t border-neutral-200/70 pt-4 dark:border-white/10">
                 <!-- Perfil mobile -->
-                <RouterLink
-                  to="/profile"
-                  aria-label="Abrir meu perfil"
-                  :class="navClass(isActive('/profile'), 'md:hidden')"
-                  @click="mobileOpen = false"
-                >
-                  <img
-                    v-if="showAvatar"
-                    :src="avatarSrc"
-                    alt=""
-                    @error="avatarFailed = true"
-                    class="h-6 w-6 shrink-0 rounded-full object-cover"
-                  />
+                <RouterLink to="/profile" aria-label="Abrir meu perfil"
+                  :class="navClass(isActive('/profile'), 'md:hidden')" @click="mobileOpen = false">
+                  <img v-if="showAvatar" :src="avatarSrc" alt="" @error="avatarFailed = true"
+                    class="h-6 w-6 shrink-0 rounded-full object-cover" />
 
-                  <div
-                    v-else
-                    class="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-neutral-200 text-[10px] font-semibold text-neutral-800 ring-1 ring-neutral-300 dark:bg-neutral-700 dark:text-neutral-100 dark:ring-neutral-600"
-                  >
+                  <div v-else
+                    class="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-neutral-200 text-[10px] font-semibold text-neutral-800 ring-1 ring-neutral-300 dark:bg-neutral-700 dark:text-neutral-100 dark:ring-neutral-600">
                     {{ initials }}
                   </div>
 
@@ -112,21 +73,13 @@
                 <nav class="grid gap-1 text-sm">
                   <Tooltip v-for="link in bottomItems" :key="link.to">
                     <TooltipTrigger as-child>
-                      <RouterLink
-                        :to="link.to"
-                        :class="navClass(isActive(link.to))"
-                        @click="mobileOpen = false"
-                      >
+                      <RouterLink :to="link.to" :class="navClass(isActive(link.to))" @click="mobileOpen = false">
                         <component :is="link.icon" class="h-4 w-4 shrink-0" />
                         <span :class="labelClass">{{ link.label }}</span>
                       </RouterLink>
                     </TooltipTrigger>
 
-                    <TooltipContent
-                      v-if="iconOnly"
-                      side="right"
-                      :side-offset="8"
-                    >
+                    <TooltipContent v-if="iconOnly" side="right" :side-offset="8">
                       {{ link.label }}
                     </TooltipContent>
                   </Tooltip>
@@ -134,11 +87,7 @@
 
                 <Tooltip>
                   <TooltipTrigger as-child>
-                    <button
-                      type="button"
-                      :class="navClass(false, LOGOUT_CLASS)"
-                      @click="logout"
-                    >
+                    <button type="button" :class="navClass(false, LOGOUT_CLASS)" @click="logout">
                       <LogOut class="h-4 w-4 shrink-0" />
                       <span :class="labelClass">Sair</span>
                     </button>
@@ -153,259 +102,22 @@
           </div>
         </aside>
 
-        <!-- PÁGINA: SEM LIQUID GLASS -->
-        <div
-          :class="[
-            'flex min-h-full min-w-0 flex-1 flex-col bg-transparent md:min-h-0',
-            navigationLayout === 'vertical-left' ? 'md:ml-14' : '',
-            navigationLayout === 'vertical-right' ? 'md:mr-14' : '',
-          ]"
-        >
-          <!-- HEADER LIQUID GLASS -->
-          <header
-            class="nt-header nt-liquid nt-liquid--wide sticky top-0 z-50 flex items-center gap-2 px-3 py-3 md:px-6"
-          >
-            <!-- Controles -->
-            <div class="relative z-[2] hidden gap-2 md:flex">
-              <!-- Sidebar -->
-              <div class="lg-glass nt-liquid nt-liquid--capsule lg-header-control">
-                <Tooltip>
-                  <TooltipTrigger as-child>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      class="hover:bg-transparent"
-                      :aria-label="collapsed ? 'Expandir sidebar' : 'Minimizar sidebar'"
-                      @click="collapsed = !collapsed"
-                    >
-                      <PanelLeftOpen v-if="collapsed" class="h-5 w-5" />
-                      <PanelLeftClose v-else class="h-5 w-5" />
-                    </Button>
-                  </TooltipTrigger>
+        <!-- PÁGINA-->
+        <div :class="[
+          'flex min-h-full min-w-0 flex-1 flex-col bg-transparent md:min-h-0',
+          navigationLayout === 'vertical-left' ? 'md:ml-14' : '',
+          navigationLayout === 'vertical-right' ? 'md:mr-14' : '',
+        ]">
 
-                  <TooltipContent>
-                    {{ collapsed ? 'Expandir sidebar' : 'Minimizar sidebar' }}
-                  </TooltipContent>
-                </Tooltip>
-              </div>
 
-              <!-- Tela cheia -->
-              <div class="lg-glass nt-liquid nt-liquid--capsule lg-header-control">
-                <Tooltip>
-                  <TooltipTrigger as-child>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      class="hover:bg-transparent"
-                      aria-label="Tela cheia"
-                      @click="toggleFullscreen"
-                    >
-                      <Minimize v-if="isFullscreen" class="h-4 w-4" />
-                      <Maximize v-else class="h-4 w-4" />
-                    </Button>
-                  </TooltipTrigger>
+          <layoutHeader />
 
-                  <TooltipContent>
-                    {{ isFullscreen ? 'Sair da tela cheia' : 'Tela cheia' }}
-                  </TooltipContent>
-                </Tooltip>
-              </div>
-            </div>
-
-            <!-- Título e pesquisa -->
-            <div class="relative z-[2] flex min-w-0 flex-1 items-center gap-3">
-              <div v-if="pageHeader.title" class="min-w-0 shrink">
-                <p class="truncate text-base font-semibold leading-tight">
-                  {{ pageHeader.title }}
-                </p>
-
-                <p
-                  v-if="pageHeader.subtitle"
-                  class="truncate text-xs text-neutral-500 dark:text-neutral-400"
-                >
-                  {{ pageHeader.subtitle }}
-                </p>
-              </div>
-
-              <!-- Pesquisa global -->
-              <div
-                v-if="pageHeader.showSearch"
-                class="w-full min-w-0 max-w-md"
-              >
-                <button
-                  type="button"
-                  class="lg-glass nt-liquid nt-liquid--capsule lg-header-search group flex w-full items-center gap-3 px-4 text-left text-sm text-neutral-500 transition-all duration-300 hover:border-neutral-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/10 dark:text-neutral-400 dark:hover:border-neutral-600"
-                  aria-haspopup="dialog"
-                  aria-label="Abrir pesquisa global"
-                  @click="openAssistant"
-                >
-                  <Search
-                    class="size-4 shrink-0 transition-transform duration-300 group-hover:scale-110"
-                    aria-hidden="true"
-                  />
-
-                  <span class="min-w-0 flex-1 truncate">
-                    {{ globalSearch || 'Buscar em todo o NT-life...' }}
-                  </span>
-
-                  <kbd class="hidden shrink-0 rounded-md border border-neutral-200/70 bg-white/50 px-1.5 py-0.5 font-mono text-[10px] text-neutral-400 dark:border-neutral-700 dark:bg-neutral-900/40 sm:inline-flex">
-                    /
-                  </kbd>
-                </button>
-              </div>
-            </div>
-
-            <!-- Ações da direita -->
-            <div class="relative z-[2] ml-auto flex shrink-0 items-center gap-1 sm:gap-2">
-              <div id="page-header-actions" class="flex items-center gap-2" />
-
-              <!-- Tema -->
-              <div class="lg-glass nt-liquid nt-liquid--capsule lg-header-control">
-                <Tooltip>
-                  <TooltipTrigger as-child>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      class="hover:bg-transparent"
-                      :aria-label="isDark ? 'Modo claro' : 'Modo escuro'"
-                      @click="toggleTheme"
-                    >
-                      <Sun v-if="isDark" class="h-4 w-4" />
-                      <Moon v-else class="h-4 w-4" />
-                    </Button>
-                  </TooltipTrigger>
-
-                  <TooltipContent>
-                    {{ isDark ? 'Modo claro' : 'Modo escuro' }}
-                  </TooltipContent>
-                </Tooltip>
-              </div>
-
-              <!-- Notificações -->
-              <div ref="notifRef" class="relative">
-                <div class="lg-glass nt-liquid nt-liquid--capsule lg-header-control">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    class="hover:bg-transparent"
-                    aria-label="Notificações"
-                    @click="toggleNotif"
-                  >
-                    <Bell class="h-4 w-4" />
-                  </Button>
-                </div>
-
-                <span
-                  v-if="unread"
-                  class="pointer-events-none absolute right-1 top-1 z-[4] grid h-4 min-w-[1rem] place-items-center rounded-full bg-red-500 px-1 text-[10px] font-semibold leading-none text-white"
-                >
-                  {{ unread > 9 ? '9+' : unread }}
-                </span>
-
-                <!-- Popover de notificações -->
-                <Transition name="nt-pop">
-                  <div
-                    v-if="notifOpen"
-                    class="lg-glass nt-liquid nt-liquid--popover lg-header-popover absolute right-0 z-[70] mt-2 w-80"
-                  >
-                    <div class="relative z-[2] flex items-center justify-between border-b border-neutral-200/50 px-4 py-3 dark:border-white/10">
-                      <p class="text-sm font-semibold">
-                        Notificações
-                      </p>
-
-                      <Button
-                        v-if="canNotify && permission === 'default'"
-                        variant="link"
-                        size="sm"
-                        class="h-auto p-0"
-                        @click="enableNotifications"
-                      >
-                        Ativar alertas
-                      </Button>
-
-                      <span
-                        v-else-if="permission === 'granted'"
-                        class="text-xs text-neutral-500 dark:text-neutral-400"
-                      >
-                        Alertas ativos
-                      </span>
-                    </div>
-
-                    <ul class="relative z-[2] max-h-80 overflow-y-auto">
-                      <li
-                        v-for="event in events.slice(0, 8)"
-                        :key="event.id"
-                        class="flex items-start gap-3 px-4 py-3 transition-colors hover:bg-neutral-100/40 dark:hover:bg-white/5"
-                      >
-                        <div class="min-w-0 flex-1">
-                          <p class="text-sm font-medium">
-                            {{ KIND_LABEL[event.kind] }}
-                          </p>
-
-                          <p class="truncate text-xs text-neutral-500 dark:text-neutral-400">
-                            {{ event.title }}
-                          </p>
-                        </div>
-
-                        <span class="shrink-0 text-xs text-neutral-400">
-                          {{ timeAgo(event.created_at) }}
-                        </span>
-                      </li>
-
-                      <li
-                        v-if="!events.length"
-                        class="px-4 py-8 text-center text-sm text-neutral-500 dark:text-neutral-400"
-                      >
-                        Nenhuma notificação ainda.
-                      </li>
-                    </ul>
-                  </div>
-                </Transition>
-              </div>
-
-              <!-- Perfil -->
-              <RouterLink
-                to="/profile"
-                title="Meu perfil"
-                aria-label="Abrir meu perfil"
-                class="lg-glass nt-liquid nt-liquid--capsule lg-header-profile group hidden shrink-0 items-center gap-2 p-1.5 md:flex lg:pr-3"
-                :class="isActive('/profile') ? 'lg-header-profile-active' : ''"
-              >
-                <img
-                  v-if="showAvatar"
-                  :src="avatarSrc"
-                  alt=""
-                  @error="avatarFailed = true"
-                  class="h-9 w-9 shrink-0 rounded-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-
-                <div
-                  v-else
-                  class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-neutral-200 text-sm font-semibold text-neutral-800 ring-1 ring-neutral-300 transition-transform duration-300 group-hover:scale-105 dark:bg-neutral-700 dark:text-neutral-100 dark:ring-neutral-600"
-                >
-                  {{ initials }}
-                </div>
-
-                <div class="hidden text-left text-sm lg:block">
-                  <p class="font-medium leading-tight">
-                    {{ displayName || 'Meu perfil' }}
-                  </p>
-
-                  <p class="text-xs text-neutral-500 dark:text-neutral-400">
-                    {{ planLabel }}
-                  </p>
-                </div>
-              </RouterLink>
-            </div>
-          </header>
 
           <!-- CONTEÚDO NORMAL: NÃO É GLASS -->
-          <main
-            :class="[
-              'relative z-0 flex-1 overflow-x-hidden px-4 md:px-6',
-              navigationLayout === 'dock' ? 'pb-28 md:pb-24' : 'pb-28 md:pb-6',
-            ]"
-          >
+          <main :class="[
+            'relative z-0 flex-1 overflow-x-hidden px-4 md:px-6',
+            navigationLayout === 'dock' ? 'pb-28 md:pb-24' : 'pb-28 md:pb-6',
+          ]">
             <Transition name="nt-page" mode="out-in">
               <div :key="route.fullPath">
                 <slot />
@@ -417,22 +129,16 @@
 
       <!-- DOCK HORIZONTAL LIQUID GLASS -->
       <Transition name="nt-nav-dock">
-        <nav
-          v-if="isDesktop && navigationLayout === 'dock'"
+        <nav v-if="isDesktop && navigationLayout === 'dock'"
           class="nt-liquid nt-liquid--capsule nt-desktop-dock fixed bottom-4 left-1/2 z-40 flex max-w-[calc(100vw-2rem)] -translate-x-1/2 items-center gap-1 overflow-x-auto p-2"
-          aria-label="Navegação principal"
-        >
+          aria-label="Navegação principal">
           <Tooltip v-for="item in dockItems" :key="item.to">
             <TooltipTrigger as-child>
-              <RouterLink
-                :to="item.to"
-                :aria-label="item.label"
-                :title="item.label"
+              <RouterLink :to="item.to" :aria-label="item.label" :title="item.label"
                 class="grid size-10 shrink-0 place-items-center rounded-full transition-all duration-200 active:scale-90"
                 :class="isActive(item.to)
                   ? 'bg-blue-500/15 text-blue-700 shadow-[inset_0_0_0_1px_rgb(59_130_246/0.20)] dark:bg-blue-400/15 dark:text-blue-200'
-                  : 'text-muted-foreground hover:bg-white/30 hover:text-foreground dark:hover:bg-white/10'"
-              >
+                  : 'text-muted-foreground hover:bg-white/30 hover:text-foreground dark:hover:bg-white/10'">
                 <component :is="item.icon" class="size-5" />
               </RouterLink>
             </TooltipTrigger>
@@ -446,13 +152,9 @@
 
           <Tooltip>
             <TooltipTrigger as-child>
-              <Button
-                variant="ghost"
-                size="icon"
-                class="size-10 shrink-0 rounded-full text-muted-foreground hover:text-destructive"
-                aria-label="Sair"
-                @click="logout"
-              >
+              <Button variant="ghost" size="icon"
+                class="size-10 shrink-0 rounded-full text-muted-foreground hover:text-destructive" aria-label="Sair"
+                @click="logout">
                 <LogOut class="size-5" />
               </Button>
             </TooltipTrigger>
@@ -466,36 +168,26 @@
 
       <!-- DOCK VERTICAL LIQUID GLASS -->
       <Transition name="nt-nav-dock">
-        <nav
-          v-if="
-            isDesktop &&
-            (navigationLayout === 'vertical-left' ||
-              navigationLayout === 'vertical-right')
-          "
-          :class="[
+        <nav v-if="
+          isDesktop &&
+          (navigationLayout === 'vertical-left' ||
+            navigationLayout === 'vertical-right')
+        " :class="[
             'nt-liquid nt-liquid--capsule nt-vertical-dock fixed top-1/2 z-40 flex max-h-[80vh] -translate-y-1/2 flex-col items-center gap-1 overflow-y-auto p-2',
             navigationLayout === 'vertical-left' ? 'left-3' : 'right-3',
-          ]"
-          aria-label="Navegação principal"
-        >
+          ]" aria-label="Navegação principal">
           <Tooltip v-for="item in dockItems" :key="item.to">
             <TooltipTrigger as-child>
-              <RouterLink
-                :to="item.to"
-                :aria-label="item.label"
-                :title="item.label"
+              <RouterLink :to="item.to" :aria-label="item.label" :title="item.label"
                 class="grid size-10 shrink-0 place-items-center rounded-full transition-all duration-200 active:scale-90"
                 :class="isActive(item.to)
                   ? 'bg-blue-500/15 text-blue-700 shadow-[inset_0_0_0_1px_rgb(59_130_246/0.20)] dark:bg-blue-400/15 dark:text-blue-200'
-                  : 'text-muted-foreground hover:bg-white/30 hover:text-foreground dark:hover:bg-white/10'"
-              >
+                  : 'text-muted-foreground hover:bg-white/30 hover:text-foreground dark:hover:bg-white/10'">
                 <component :is="item.icon" class="size-5" />
               </RouterLink>
             </TooltipTrigger>
 
-            <TooltipContent
-              :side="navigationLayout === 'vertical-left' ? 'right' : 'left'"
-            >
+            <TooltipContent :side="navigationLayout === 'vertical-left' ? 'right' : 'left'">
               {{ item.label }}
             </TooltipContent>
           </Tooltip>
@@ -504,20 +196,14 @@
 
           <Tooltip>
             <TooltipTrigger as-child>
-              <Button
-                variant="ghost"
-                size="icon"
-                class="size-10 shrink-0 rounded-full text-muted-foreground hover:text-destructive"
-                aria-label="Sair"
-                @click="logout"
-              >
+              <Button variant="ghost" size="icon"
+                class="size-10 shrink-0 rounded-full text-muted-foreground hover:text-destructive" aria-label="Sair"
+                @click="logout">
                 <LogOut class="size-5" />
               </Button>
             </TooltipTrigger>
 
-            <TooltipContent
-              :side="navigationLayout === 'vertical-left' ? 'right' : 'left'"
-            >
+            <TooltipContent :side="navigationLayout === 'vertical-left' ? 'right' : 'left'">
               Sair
             </TooltipContent>
           </Tooltip>
@@ -525,48 +211,27 @@
       </Transition>
 
       <!-- SPOTLIGHT GLOBAL -->
-      <GlobalSpotlight
-        :open="assistantOpen"
-        :tasks="tasks"
-        :events="events"
-        :current-path="route.path"
-        :current-title="pageHeader.title || 'Página atual'"
-        @close="closeAssistant"
-        @search="handleAssistantSearch"
-        @select="openAssistantResult"
-      />
+      <GlobalSpotlight :open="assistantOpen" :tasks="tasks" :events="events" :current-path="route.path"
+        :current-title="pageHeader.title || 'Página atual'" @close="closeAssistant" @search="handleAssistantSearch"
+        @select="openAssistantResult" />
 
       <!-- NAVEGAÇÃO MOBILE LIQUID GLASS -->
       <Transition name="nt-fade">
         <div
-          class="fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.75rem)] z-50 flex items-center justify-between gap-2 md:hidden"
-        >
-          <nav
-            class="nt-liquid nt-liquid--capsule nt-mobile-navigation flex items-center gap-1 p-1.5"
-            aria-label="Navegação principal"
-          >
-            <RouterLink
-              v-for="tab in mobileTabs"
-              :key="tab.to"
-              :to="tab.to"
-              :aria-label="tab.label"
-              :title="tab.label"
-              class="grid h-11 w-11 place-items-center rounded-full transition-all duration-200 active:scale-90"
-              :class="isActive(tab.to)
+          class="fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.75rem)] z-50 flex items-center justify-between gap-2 md:hidden">
+          <nav class="nt-liquid nt-liquid--capsule nt-mobile-navigation flex items-center gap-1 p-1.5"
+            aria-label="Navegação principal">
+            <RouterLink v-for="tab in mobileTabs" :key="tab.to" :to="tab.to" :aria-label="tab.label" :title="tab.label"
+              class="grid h-11 w-11 place-items-center rounded-full transition-all duration-200 active:scale-90" :class="isActive(tab.to)
                 ? 'bg-blue-500/15 text-blue-700 shadow-[inset_0_0_0_1px_rgb(59_130_246/0.20)] dark:bg-blue-400/15 dark:text-blue-200'
-                : 'text-neutral-500 hover:bg-white/30 dark:text-neutral-400 dark:hover:bg-white/10'"
-            >
+                : 'text-neutral-500 hover:bg-white/30 dark:text-neutral-400 dark:hover:bg-white/10'">
               <component :is="tab.icon" class="h-5 w-5" />
             </RouterLink>
           </nav>
 
-          <button
-            type="button"
-            aria-label="Abrir menu"
-            title="Menu"
+          <button type="button" aria-label="Abrir menu" title="Menu"
             class="nt-liquid nt-liquid--capsule nt-mobile-menu relative grid h-14 w-14 shrink-0 place-items-center transition-transform duration-200 active:scale-90"
-            @click="mobileOpen = !mobileOpen"
-          >
+            @click="mobileOpen = !mobileOpen">
             <Menu class="h-5 w-5" />
           </button>
         </div>
@@ -577,7 +242,7 @@
 
 <script setup lang="ts">
 import { pageHeader } from '@/lib/pageHeader';
-
+import layoutHeader from './AppLayoutHeader.vue';
 import {
   computed,
   onBeforeUnmount,
@@ -586,7 +251,6 @@ import {
   watch,
 } from 'vue';
 
-import { initLiquidGlass } from '@/lib/liquidGlass';
 
 import {
   useRoute,
@@ -629,7 +293,7 @@ import {
   sidebarCollapsed as collapsed,
 } from '@/lib/ui';
 
-import { timeAgo } from '@/lib/format';
+
 import { cn } from '@/lib/utils';
 
 import type {
@@ -667,153 +331,6 @@ import { navigationLayout } from '@/lib/navigationAppearance';
 
 import GlobalSpotlight from './GlobalSpotlight.vue';
 
-/* =========================================
-   LIQUID GLASS
-========================================= */
-
-let stopLiquidGlass: (() => void) | undefined;
-
-let glassResizeObserver: ResizeObserver | undefined;
-let glassMutationObserver: MutationObserver | undefined;
-
-const observedGlass = new WeakSet<HTMLElement>();
-
-/*
- * Regra de proporção:
- *
- * Componentes mais largos e baixos recebem um aro
- * progressivamente mais fino.
- *
- * Componentes compactos ou altos mantêm um aro
- * visualmente mais espesso.
- */
-function updateGlassThickness(
-  entries: ResizeObserverEntry[],
-): void {
-  for (const entry of entries) {
-    const element = entry.target as HTMLElement;
-
-    const width = entry.contentRect.width;
-    const height = entry.contentRect.height;
-
-    if (width <= 0 || height <= 0) continue;
-
-    const aspectRatio = width / height;
-
-    const bezel = Math.max(
-      1.15,
-      Math.min(
-        3,
-        3 - Math.log2(Math.max(1, aspectRatio)) * 0.42,
-      ),
-    );
-
-    element.style.setProperty(
-      '--lg-bezel',
-      `${bezel.toFixed(2)}px`,
-    );
-  }
-}
-
-/*
- * Registra também elementos que aparecem depois,
- * como o popover de notificações.
- */
-function observeGlassElements(scope: ParentNode): void {
-  if (!glassResizeObserver) return;
-
-  if (
-    scope instanceof HTMLElement &&
-    scope.matches('.nt-liquid')
-  ) {
-    if (!observedGlass.has(scope)) {
-      observedGlass.add(scope);
-      glassResizeObserver.observe(scope);
-    }
-  }
-
-  scope.querySelectorAll<HTMLElement>('.nt-liquid').forEach(
-    (element) => {
-      if (observedGlass.has(element)) return;
-
-      observedGlass.add(element);
-      glassResizeObserver?.observe(element);
-    },
-  );
-}
-
-/*
- * Reflexo especular que acompanha o cursor.
- */
-function updateSpecularHighlight(event: PointerEvent): void {
-  const target = event.target;
-
-  if (!(target instanceof Element)) return;
-
-  const glass = target.closest<HTMLElement>('.nt-liquid');
-
-  if (!glass) return;
-
-  const rect = glass.getBoundingClientRect();
-
-  if (!rect.width || !rect.height) return;
-
-  const x = ((event.clientX - rect.left) / rect.width) * 100;
-  const y = ((event.clientY - rect.top) / rect.height) * 100;
-
-  glass.style.setProperty(
-    '--lg-x',
-    `${Math.max(0, Math.min(100, x))}%`,
-  );
-
-  glass.style.setProperty(
-    '--lg-y',
-    `${Math.max(0, Math.min(100, y))}%`,
-  );
-}
-
-onMounted(() => {
-  stopLiquidGlass = initLiquidGlass();
-
-  glassResizeObserver = new ResizeObserver(
-    updateGlassThickness,
-  );
-
-  observeGlassElements(document);
-
-  glassMutationObserver = new MutationObserver((records) => {
-    for (const record of records) {
-      for (const node of record.addedNodes) {
-        if (node instanceof HTMLElement) {
-          observeGlassElements(node);
-        }
-      }
-    }
-  });
-
-  glassMutationObserver.observe(document.body, {
-    childList: true,
-    subtree: true,
-  });
-
-  document.addEventListener(
-    'pointermove',
-    updateSpecularHighlight,
-    { passive: true },
-  );
-});
-
-onBeforeUnmount(() => {
-  document.removeEventListener(
-    'pointermove',
-    updateSpecularHighlight,
-  );
-
-  glassMutationObserver?.disconnect();
-  glassResizeObserver?.disconnect();
-
-  stopLiquidGlass?.();
-});
 
 /* =========================================
    ROTAS E QUERIES
@@ -836,7 +353,7 @@ const tasks = computed(
   () => tasksQuery.data.value?.tasks ?? [],
 );
 
-const events = computed<ActivityEvent[]>(
+export const events = computed<ActivityEvent[]>(
   () => dashQuery.data.value?.events ?? [],
 );
 
@@ -934,7 +451,7 @@ const dockItems = computed(() => [
    NOTIFICAÇÕES
 ========================================= */
 
-const KIND_LABEL: Record<EventKind, string> = {
+export const KIND_LABEL: Record<EventKind, string> = {
   created: 'Nova tarefa',
   completed: 'Tarefa concluída',
   reopened: 'Tarefa reaberta',
@@ -942,14 +459,14 @@ const KIND_LABEL: Record<EventKind, string> = {
   deleted: 'Tarefa excluída',
 };
 
-const notifOpen = ref(false);
+export const notifOpen = ref(false);
 const notifRef = ref<HTMLElement | null>(null);
 
 onClickOutside(notifRef, () => {
   notifOpen.value = false;
 });
 
-const unread = computed(
+export const unread = computed(
   () =>
     events.value.filter(
       (event) =>
@@ -957,7 +474,7 @@ const unread = computed(
     ).length,
 );
 
-function toggleNotif(): void {
+export function toggleNotif(): void {
   notifOpen.value = !notifOpen.value;
 
   if (notifOpen.value) {
@@ -969,15 +486,15 @@ function toggleNotif(): void {
    ALERTAS DO NAVEGADOR
 ========================================= */
 
-const canNotify =
+export const canNotify =
   typeof window !== 'undefined' &&
   'Notification' in window;
 
-const permission = ref<NotificationPermission>(
+export const permission = ref<NotificationPermission>(
   canNotify ? Notification.permission : 'denied',
 );
 
-async function enableNotifications(): Promise<void> {
+export async function enableNotifications(): Promise<void> {
   if (!canNotify) return;
 
   permission.value = await Notification.requestPermission();
@@ -1021,11 +538,11 @@ const mobileOpen = ref(false);
    TEMA
 ========================================= */
 
-const isDark = ref(
+export const isDark = ref(
   document.documentElement.classList.contains('dark'),
 );
 
-function toggleTheme(): void {
+export function toggleTheme(): void {
   const dark =
     document.documentElement.classList.toggle('dark');
 
@@ -1041,7 +558,7 @@ function toggleTheme(): void {
    TELA CHEIA
 ========================================= */
 
-const isFullscreen = ref(
+export const isFullscreen = ref(
   !!document.fullscreenElement,
 );
 
@@ -1049,7 +566,7 @@ useEventListener(document, 'fullscreenchange', () => {
   isFullscreen.value = !!document.fullscreenElement;
 });
 
-async function toggleFullscreen(): Promise<void> {
+export async function toggleFullscreen(): Promise<void> {
   try {
     if (document.fullscreenElement) {
       await document.exitFullscreen();
@@ -1065,22 +582,22 @@ async function toggleFullscreen(): Promise<void> {
    SPOTLIGHT GLOBAL
 ========================================= */
 
-const assistantOpen = ref(false);
+export const assistantOpen = ref(false);
 
-function openAssistant(): void {
+export function openAssistant(): void {
   notifOpen.value = false;
   assistantOpen.value = true;
 }
 
-function closeAssistant(): void {
+export function closeAssistant(): void {
   assistantOpen.value = false;
 }
 
-function handleAssistantSearch(value: string): void {
+export function handleAssistantSearch(value: string): void {
   globalSearch.value = value;
 }
 
-function openAssistantResult(
+export function openAssistantResult(
   result: { href: string },
 ): void {
   assistantOpen.value = false;
@@ -1130,14 +647,14 @@ useEventListener(window, 'keydown', (event: KeyboardEvent) => {
    PERFIL
 ========================================= */
 
-const displayName = computed(
+export const displayName = computed(
   () =>
     me.value?.name ||
     me.value?.email?.split('@')[0] ||
     '',
 );
 
-const initials = computed(() => {
+export const initials = computed(() => {
   const parts = displayName.value
     .split(' ')
     .filter(Boolean)
@@ -1151,13 +668,13 @@ const initials = computed(() => {
   return letters || '?';
 });
 
-const avatarSrc = computed<string | undefined>(
+export const avatarSrc = computed<string | undefined>(
   () => me.value?.avatar ?? undefined,
 );
 
-const avatarFailed = ref(false);
+export const avatarFailed = ref(false);
 
-const showAvatar = computed(
+export const showAvatar = computed(
   () => !!avatarSrc.value && !avatarFailed.value,
 );
 
@@ -1165,7 +682,7 @@ watch(avatarSrc, () => {
   avatarFailed.value = false;
 });
 
-const planLabel = computed(
+export const planLabel = computed(
   () => me.value?.plan === 'pro' ? 'Plano Pro' : 'Plano Free',
 );
 
@@ -1173,7 +690,7 @@ const planLabel = computed(
    ROTAS
 ========================================= */
 
-function isActive(to: string): boolean {
+export function isActive(to: string): boolean {
   return route.path === to;
 }
 
@@ -1198,124 +715,6 @@ function logout(): void {
 
 <style>
 /* =========================================
-   PROPRIEDADES ANIMÁVEIS
-========================================= */
-
-@property --lg-x {
-  syntax: "<percentage>";
-  inherits: true;
-  initial-value: 50%;
-}
-
-@property --lg-y {
-  syntax: "<percentage>";
-  inherits: true;
-  initial-value: 0%;
-}
-
-@property --lg-hover {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 0;
-}
-
-@property --lg-press {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 0;
-}
-
-@property --lg-glow {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 1;
-}
-
-/* =========================================
-   MATERIAL GLOBAL LIQUID GLASS
-========================================= */
-
-.nt-liquid {
-  --lg-x: 50%;
-  --lg-y: 0%;
-  --lg-hover: 0;
-  --lg-press: 0;
-  --lg-glow: 1;
-  --lg-bezel: 1.6px;
-
-  position: relative;
-  isolation: isolate;
-
-  border: var(--lg-bezel) solid rgb(255 255 255 / 0.42);
-
-  background: rgb(255 255 255 / 0.24);
-
-  -webkit-backdrop-filter: blur(24px) saturate(185%);
-  backdrop-filter: blur(24px) saturate(185%);
-
-  box-shadow:
-    0 12px 32px rgb(15 23 42 / 0.10),
-    0 3px 9px rgb(15 23 42 / 0.055),
-    inset 0 1px 0 rgb(255 255 255 / 0.34);
-
-  transition:
-    background-color 250ms ease,
-    border-color 250ms ease,
-    box-shadow 250ms ease,
-    --lg-hover 300ms ease,
-    --lg-press 180ms ease;
-}
-
-/* Mantém as posições originais dos componentes */
-.nt-header.nt-liquid {
-  position: sticky;
-}
-
-.nt-sidebar.nt-liquid {
-  position: fixed;
-}
-
-.nt-desktop-dock.nt-liquid,
-.nt-vertical-dock.nt-liquid {
-  position: fixed;
-}
-
-.lg-header-popover.nt-liquid {
-  position: absolute;
-}
-
-.nt-liquid--attached {
-  border-radius: 0 !important;
-}
-
-/* Conteúdo sempre acima dos reflexos */
-.nt-liquid > * {
-  position: relative;
-  z-index: 2;
-}
-
-/* =========================================
-   FORMATOS
-========================================= */
-
-.nt-liquid--wide {
-  border-radius: 1.5rem;
-}
-
-.nt-liquid--panel {
-  border-radius: 1.75rem;
-}
-
-.nt-liquid--capsule {
-  border-radius: 999px;
-}
-
-.nt-liquid--popover {
-  border-radius: 1.25rem;
-  overflow: hidden;
-}
-
-/* =========================================
    SIDEBAR
 ========================================= */
 
@@ -1335,228 +734,32 @@ function logout(): void {
 }
 
 /* =========================================
-   SPECULAR HIGHLIGHT — BORDA
+SPECULAR HIGHLIGHT — SÓ BRILHO
 ========================================= */
 
-.nt-liquid::before {
-  content: "";
+.nt-glass {
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    background: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(255, 255, 255, 0.45) 20%,
+        rgba(255, 255, 255, 0.08) 45%,
+        rgba(255, 255, 255, 0.35) 75%,
+        rgba(255, 255, 255, 0.85) 100%);
 
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-
-  box-sizing: border-box;
-  padding: var(--lg-bezel);
-
-  border-radius: inherit;
-  pointer-events: none;
-
-  background:
-    radial-gradient(
-      ellipse 190px 130px at var(--lg-x) var(--lg-y),
-      rgb(
-        255 255 255 /
-        calc(
-          (
-            0.22 +
-            var(--lg-hover) * 0.42 +
-            var(--lg-press) * 0.28
-          ) * var(--lg-glow)
-        )
-      ) 0%,
-      transparent 100%
-    ),
-    linear-gradient(
-      145deg,
-      rgb(255 255 255 / 0.95) 0%,
-      rgb(255 255 255 / 0.46) 18%,
-      rgb(255 255 255 / 0.13) 48%,
-      rgb(15 23 42 / 0.12) 100%
-    );
-
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-
-  transition:
-    --lg-x 90ms ease-out,
-    --lg-y 90ms ease-out,
-    opacity 250ms ease;
+    pointer-events: none;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
 }
 
-/* =========================================
-   SPECULAR HIGHLIGHT — SUPERFÍCIE
-========================================= */
-
-.nt-liquid::after {
-  content: "";
-
-  position: absolute;
-  inset: var(--lg-bezel);
-  z-index: 0;
-
-  border-radius: inherit;
-  pointer-events: none;
-
-  background:
-    radial-gradient(
-      ellipse 220px 130px at var(--lg-x) var(--lg-y),
-      rgb(
-        255 255 255 /
-        calc(
-          (
-            0.07 +
-            var(--lg-hover) * 0.13 +
-            var(--lg-press) * 0.08
-          ) * var(--lg-glow)
-        )
-      ) 0%,
-      transparent 100%
-    ),
-    linear-gradient(
-      180deg,
-      rgb(255 255 255 / 0.28) 0%,
-      rgb(255 255 255 / 0.11) 24%,
-      rgb(255 255 255 / 0.025) 58%,
-      transparent 100%
-    );
-
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.24),
-    inset 0 -1px 0 rgb(255 255 255 / 0.055);
-
-  transition:
-    --lg-x 90ms ease-out,
-    --lg-y 90ms ease-out,
-    opacity 250ms ease;
-}
-
-/* =========================================
-   MODO ESCURO
-========================================= */
-
-.dark .nt-liquid {
-  --lg-glow: 0.72;
-
-  border-color: rgb(255 255 255 / 0.19);
-
-  background: rgb(25 29 37 / 0.42);
-
-  box-shadow:
-    0 12px 32px rgb(0 0 0 / 0.24),
-    0 3px 9px rgb(0 0 0 / 0.14),
-    inset 0 1px 0 rgb(255 255 255 / 0.13);
-}
-
-.dark .nt-liquid::before {
-  background:
-    radial-gradient(
-      ellipse 190px 130px at var(--lg-x) var(--lg-y),
-      rgb(
-        255 255 255 /
-        calc(
-          (
-            0.20 +
-            var(--lg-hover) * 0.40 +
-            var(--lg-press) * 0.26
-          ) * var(--lg-glow)
-        )
-      ) 0%,
-      transparent 100%
-    ),
-    linear-gradient(
-      145deg,
-      rgb(255 255 255 / 0.48) 0%,
-      rgb(255 255 255 / 0.16) 22%,
-      rgb(255 255 255 / 0.035) 55%,
-      rgb(0 0 0 / 0.13) 100%
-    );
-}
-
-.dark .nt-liquid::after {
-  background:
-    radial-gradient(
-      ellipse 220px 130px at var(--lg-x) var(--lg-y),
-      rgb(
-        255 255 255 /
-        calc(
-          (
-            0.07 +
-            var(--lg-hover) * 0.13 +
-            var(--lg-press) * 0.08
-          ) * var(--lg-glow)
-        )
-      ) 0%,
-      transparent 100%
-    ),
-    linear-gradient(
-      180deg,
-      rgb(255 255 255 / 0.19) 0%,
-      rgb(255 255 255 / 0.065) 24%,
-      rgb(255 255 255 / 0.015) 58%,
-      transparent 100%
-    );
-
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.14),
-    inset 0 -1px 0 rgb(255 255 255 / 0.04);
-}
-
-/* =========================================
-   INTERAÇÕES UNIFORMES
-========================================= */
-
-.nt-liquid:hover {
-  --lg-hover: 1;
-
-  box-shadow:
-    0 15px 36px rgb(15 23 42 / 0.13),
-    0 4px 11px rgb(15 23 42 / 0.07),
-    inset 0 1px 0 rgb(255 255 255 / 0.38);
-}
-
-.dark .nt-liquid:hover {
-  box-shadow:
-    0 15px 36px rgb(0 0 0 / 0.29),
-    0 4px 11px rgb(0 0 0 / 0.17),
-    inset 0 1px 0 rgb(255 255 255 / 0.17);
-}
-
-.nt-liquid:active {
-  --lg-press: 1;
-}
-
-.nt-liquid:focus-visible {
-  outline: 2px solid rgb(59 130 246 / 0.45);
-  outline-offset: 3px;
-}
-
-/* =========================================
-   REGRA DE PROPORÇÃO DO VIDRO
-========================================= */
-
-/*
- * --lg-bezel é calculado pelo ResizeObserver:
- *
- * Formato compacto/quase quadrado: aro mais espesso.
- * Formato horizontal e largo: aro mais fino.
- *
- * A mesma variável controla a borda e o specular.
- */
-
-/* =========================================
-   HEADER
-========================================= */
-
-.nt-header {
-  container-type: inline-size;
-  border-radius: 1.5rem;
-}
-
-.nt-header .lg-header-control {
+.lg-header-control {
   display: grid;
 
   width: clamp(42px, calc(52px - 0.45cqi), 50px);
@@ -1567,22 +770,22 @@ function logout(): void {
   padding: 4px;
 }
 
-.nt-header .lg-header-search {
+.lg-header-search {
   height: clamp(38px, calc(46px - 0.36cqi), 44px);
   min-height: 38px;
 }
 
-.nt-header .lg-header-profile {
+.lg-header-profile {
   height: clamp(42px, calc(52px - 0.45cqi), 50px);
   min-height: 42px;
 }
 
-.nt-header .lg-header-profile-active {
+.lg-header-profile-active {
   border-color: rgb(59 130 246 / 0.42);
   background-color: rgb(59 130 246 / 0.10);
 }
 
-.dark .nt-header .lg-header-profile-active {
+.dark .lg-header-profile-active {
   border-color: rgb(147 197 253 / 0.32);
   background-color: rgb(59 130 246 / 0.15);
 }
@@ -1591,7 +794,7 @@ function logout(): void {
    POPOVER
 ========================================= */
 
-.nt-header .lg-header-popover {
+.lg-header-popover {
   border-radius: 1.25rem;
 }
 
@@ -1730,6 +933,7 @@ function logout(): void {
 ========================================= */
 
 @media (prefers-reduced-motion: reduce) {
+
   .nt-sidebar,
   .nt-liquid,
   .nt-liquid::before,
