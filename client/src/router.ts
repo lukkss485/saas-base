@@ -62,6 +62,12 @@ const routes: RouteRecordRaw[] = [
     component: () => import("@/views/Financeiro.vue"),
     meta: { private: true },
   },
+  {
+    path: "/ui-kit",
+    name: "ui-kit",
+    component: () => import("@/views/UiKit.vue"),
+    meta: { private: true },
+  },
 ];
 
 const router = createRouter({ history: createWebHistory(), routes });
