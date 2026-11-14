@@ -51,6 +51,14 @@ const parseId = (raw: unknown): number | null => {
   return Number.isInteger(n) && n > 0 ? n : null;
 };
 
+const parseDateKey = (raw: unknown): string | null => {
+  if (typeof raw !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(raw)) return null;
+  const timestamp = Date.parse(`${raw}T00:00:00Z`);
+  return Number.isNaN(timestamp) || new Date(timestamp).toISOString().slice(0, 10) !== raw
+    ? null
+    : raw;
+};
+
 const fail = (res: Response, status: number, error: string): void => {
   res.status(status).json({ error });
 };
@@ -351,12 +359,34 @@ function dateColumns(state: TxState, date: string, currentDue: string | null) {
 r.get('/transactions', requireAuth, wrap(async (req, res) => {
   const userId = userIdOf(req);
   const limit = Math.min(Math.max(Number(req.query.limit) || 8, 1), 100);
+  const rawAccountId = req.query.accountId;
+  let accountFilter = '';
+  let dateFilter = '';
+  const params: unknown[] = [userId];
+  if (rawAccountId !== undefined && rawAccountId !== 'all') {
+    const accountId = parseId(rawAccountId);
+    if (accountId === null) return fail(res, 400, 'Conta inválida');
+    if (!(await owns('finance_accounts', accountId, userId))) return fail(res, 404, 'Conta não encontrada');
+    params.push(accountId);
+    accountFilter = ` AND (t.account_id = $${params.length} OR t.destination_account_id = $${params.length})`;
+  }
+  const rawFrom = req.query.from;
+  const rawTo = req.query.to;
+  if (rawFrom !== undefined || rawTo !== undefined) {
+    const from = parseDateKey(rawFrom);
+    const to = parseDateKey(rawTo);
+    if (!from || !to) return fail(res, 400, 'Período inválido');
+    if (from > to) return fail(res, 400, 'A data inicial é posterior à data final');
+    params.push(from, to);
+    dateFilter = ` AND COALESCE(t.effective_date, t.due_date) BETWEEN $${params.length - 1}::date AND $${params.length}::date`;
+  }
+  params.push(limit);
   const { rows } = await query<TxRow>(
     `${TX_SELECT}
-     WHERE t.user_id = $1 AND t.deleted_at IS NULL
+     WHERE t.user_id = $1 AND t.deleted_at IS NULL${accountFilter}${dateFilter}
      ORDER BY COALESCE(t.effective_date, t.due_date) DESC NULLS LAST, t.id DESC
-     LIMIT $2`,
-    [userId, limit],
+     LIMIT $${params.length}`,
+    params,
   );
   const today = todayInSaoPaulo();
   res.json({ transactions: rows.map((row) => toDto(row, today)) });

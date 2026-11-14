@@ -53,6 +53,7 @@ export interface FinanceDueItem {
   amountCents: number;
   dueDate: string;
   status: FinanceDueStatus;
+  accountId?: string | null;
   counterparty?: string | null;
   accountName?: string | null;
 }

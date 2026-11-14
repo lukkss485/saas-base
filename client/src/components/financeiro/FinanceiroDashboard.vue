@@ -995,14 +995,15 @@ function transactionDateLabel(transaction: FinanceTransaction): string {
         <Skeleton class="h-64 rounded-2xl" />
       </div>
     </section>
-    <Card v-else class="rounded-2xl border-dashed shadow-sm">
+    <Card v-else-if="!error" class="rounded-2xl border-dashed shadow-sm">
       <CardContent class="flex flex-col items-center px-5 py-12 text-center">
         <div class="rounded-2xl bg-muted p-3 text-muted-foreground">
           <Wallet class="h-7 w-7" aria-hidden="true" />
         </div>
-        <h2 class="mt-3 text-lg font-semibold">Seus dados financeiros ainda não foram carregados</h2>
-        <p class="mt-1 max-w-lg text-sm text-muted-foreground">Conecte esta tela às consultas financeiras do NT-life. A
-          dashboard não mostra números fictícios nem trata falhas como saldo zero.</p>
+        <h2 class="mt-3 text-lg font-semibold">Nenhum dado financeiro disponível</h2>
+        <p class="mt-1 max-w-lg text-sm text-muted-foreground">
+          Os dados das suas contas e transações aparecerão aqui após serem registrados.
+        </p>
         <Button type="button" variant="outline" class="mt-4 rounded-xl" @click="emit('retry')">
           <RefreshCw class="mr-2 h-4 w-4" aria-hidden="true" />Tentar carregar novamente
         </Button>

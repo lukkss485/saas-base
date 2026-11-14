@@ -226,22 +226,40 @@ r.get('/due-items', requireAuth, wrap(async (req, res) => {
   const userId = userIdOf(req);
   const today = todayInSaoPaulo();
   const urgent = req.query.filter === 'urgent';
-
   const params: unknown[] = [userId, today];
   let horizon = '';
   if (urgent) {
     params.push(addDays(today, UPCOMING_DAYS));
     horizon = `AND t.due_date <= $3::date`;
   }
+  let accountFilter = '';
+  const rawAccountId = req.query.accountId;
+  if (rawAccountId !== undefined && rawAccountId !== 'all') {
+    if (typeof rawAccountId !== 'string' || !/^[1-9]\d*$/.test(rawAccountId)) {
+      return fail(res, 400, 'Conta inválida');
+    }
+    const accountId = Number(rawAccountId);
+    if (!Number.isSafeInteger(accountId)) return fail(res, 400, 'Conta inválida');
+    const { rows: [account] } = await query<{ id: number }>(
+      'SELECT id FROM finance_accounts WHERE id = $1 AND user_id = $2',
+      [accountId, userId],
+    );
+    if (!account) return fail(res, 404, 'Conta não encontrada');
+    params.push(accountId);
+    accountFilter = `AND t.account_id = $${params.length}`;
+  }
 
   // Atrasados primeiro, depois por data de vencimento
   const { rows } = await query<{
     id: number; type: 'income' | 'expense'; description: string; amount_cents: number; due_date: string;
+    account_id: number; account_name: string;
   }>(
-    `SELECT t.id, t.type, t.description, t.amount_cents, to_char(t.due_date, 'YYYY-MM-DD') AS due_date
+    `SELECT t.id, t.type, t.description, t.amount_cents,
+       to_char(t.due_date, 'YYYY-MM-DD') AS due_date, t.account_id, a.name AS account_name
      FROM finance_transactions t
+     JOIN finance_accounts a ON a.id = t.account_id
      WHERE t.user_id = $1 AND t.state = 'pending' AND t.deleted_at IS NULL
-       AND t.type IN ('income', 'expense') ${horizon}
+       AND t.type IN ('income', 'expense') ${horizon} ${accountFilter}
      ORDER BY (t.due_date < $2::date) DESC, t.due_date ASC, t.id ASC
      LIMIT 50`,
     params,
@@ -255,6 +273,8 @@ r.get('/due-items', requireAuth, wrap(async (req, res) => {
       amountCents: row.amount_cents,
       dueDate: row.due_date,
       status: deriveStatus('pending', row.due_date, today),
+      accountId: row.account_id,
+      accountName: row.account_name,
     })),
   });
 }));

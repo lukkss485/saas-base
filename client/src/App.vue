@@ -18,14 +18,18 @@
 
 <script setup lang="ts">
 
-import { computed } from 'vue';
+import { computed, provide } from 'vue';
 import { useRoute, RouterView } from 'vue-router';
 import { Toaster } from '@/components/ui/sonner';
 import AppLayout from '@/components/layout/AppLayout.vue';
 import AppFooter from '@/components/layout/AppFooter.vue';
 import AppHeader from '@/components/layout/AppHeader.vue';
 import DevTools from '@/components/DevTools.vue';
+import { createFinanceiroApiAdapter } from '@/lib/financeiro-api';
+import { financeiroPageAdapterKey } from '@/lib/financeiro-page-adapter';
 import 'vue-sonner/style.css';
+
+provide(financeiroPageAdapterKey, createFinanceiroApiAdapter());
 
 const route = useRoute();
 const isDev = import.meta.env.DEV;
