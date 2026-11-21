@@ -1,3 +1,9 @@
+supportedArchitectures:
+  os:
+    - win32
+  cpu:
+    - x64
+
 allowBuilds:
   '@embedded-postgres/windows-x64': true
   esbuild: true

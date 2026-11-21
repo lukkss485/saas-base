@@ -352,8 +352,7 @@ const me = computed(
 const tasks = computed(
   () => tasksQuery.data.value?.tasks ?? [],
 );
-
-export const events = computed<ActivityEvent[]>(
+const events = computed<ActivityEvent[]>(
   () => dashQuery.data.value?.events ?? [],
 );
 
@@ -451,7 +450,7 @@ const dockItems = computed(() => [
    NOTIFICAÇÕES
 ========================================= */
 
-export const KIND_LABEL: Record<EventKind, string> = {
+const KIND_LABEL: Record<EventKind, string> = {
   created: 'Nova tarefa',
   completed: 'Tarefa concluída',
   reopened: 'Tarefa reaberta',
@@ -459,14 +458,14 @@ export const KIND_LABEL: Record<EventKind, string> = {
   deleted: 'Tarefa excluída',
 };
 
-export const notifOpen = ref(false);
+const notifOpen = ref(false);
 const notifRef = ref<HTMLElement | null>(null);
 
 onClickOutside(notifRef, () => {
   notifOpen.value = false;
 });
 
-export const unread = computed(
+const unread = computed(
   () =>
     events.value.filter(
       (event) =>
@@ -474,7 +473,7 @@ export const unread = computed(
     ).length,
 );
 
-export function toggleNotif(): void {
+function toggleNotif(): void {
   notifOpen.value = !notifOpen.value;
 
   if (notifOpen.value) {
@@ -486,15 +485,15 @@ export function toggleNotif(): void {
    ALERTAS DO NAVEGADOR
 ========================================= */
 
-export const canNotify =
+const canNotify =
   typeof window !== 'undefined' &&
   'Notification' in window;
 
-export const permission = ref<NotificationPermission>(
+const permission = ref<NotificationPermission>(
   canNotify ? Notification.permission : 'denied',
 );
 
-export async function enableNotifications(): Promise<void> {
+ async function enableNotifications(): Promise<void> {
   if (!canNotify) return;
 
   permission.value = await Notification.requestPermission();
@@ -538,27 +537,15 @@ const mobileOpen = ref(false);
    TEMA
 ========================================= */
 
-export const isDark = ref(
-  document.documentElement.classList.contains('dark'),
-);
 
-export function toggleTheme(): void {
-  const dark =
-    document.documentElement.classList.toggle('dark');
 
-  localStorage.setItem(
-    'theme',
-    dark ? 'dark' : 'light',
-  );
 
-  isDark.value = dark;
-}
 
 /* =========================================
    TELA CHEIA
 ========================================= */
 
-export const isFullscreen = ref(
+const isFullscreen = ref(
   !!document.fullscreenElement,
 );
 
@@ -566,7 +553,7 @@ useEventListener(document, 'fullscreenchange', () => {
   isFullscreen.value = !!document.fullscreenElement;
 });
 
-export async function toggleFullscreen(): Promise<void> {
+async function toggleFullscreen(): Promise<void> {
   try {
     if (document.fullscreenElement) {
       await document.exitFullscreen();
@@ -582,22 +569,22 @@ export async function toggleFullscreen(): Promise<void> {
    SPOTLIGHT GLOBAL
 ========================================= */
 
-export const assistantOpen = ref(false);
+const assistantOpen = ref(false);
 
-export function openAssistant(): void {
+function openAssistant(): void {
   notifOpen.value = false;
   assistantOpen.value = true;
 }
 
-export function closeAssistant(): void {
+function closeAssistant(): void {
   assistantOpen.value = false;
 }
 
-export function handleAssistantSearch(value: string): void {
+function handleAssistantSearch(value: string): void {
   globalSearch.value = value;
 }
 
-export function openAssistantResult(
+function openAssistantResult(
   result: { href: string },
 ): void {
   assistantOpen.value = false;
@@ -647,14 +634,14 @@ useEventListener(window, 'keydown', (event: KeyboardEvent) => {
    PERFIL
 ========================================= */
 
-export const displayName = computed(
+const displayName = computed(
   () =>
     me.value?.name ||
     me.value?.email?.split('@')[0] ||
     '',
 );
 
-export const initials = computed(() => {
+const initials = computed(() => {
   const parts = displayName.value
     .split(' ')
     .filter(Boolean)
@@ -668,13 +655,13 @@ export const initials = computed(() => {
   return letters || '?';
 });
 
-export const avatarSrc = computed<string | undefined>(
+const avatarSrc = computed<string | undefined>(
   () => me.value?.avatar ?? undefined,
 );
 
-export const avatarFailed = ref(false);
+const avatarFailed = ref(false);
 
-export const showAvatar = computed(
+const showAvatar = computed(
   () => !!avatarSrc.value && !avatarFailed.value,
 );
 
@@ -682,7 +669,7 @@ watch(avatarSrc, () => {
   avatarFailed.value = false;
 });
 
-export const planLabel = computed(
+const planLabel = computed(
   () => me.value?.plan === 'pro' ? 'Plano Pro' : 'Plano Free',
 );
 
@@ -690,7 +677,7 @@ export const planLabel = computed(
    ROTAS
 ========================================= */
 
-export function isActive(to: string): boolean {
+function isActive(to: string): boolean {
   return route.path === to;
 }
 
