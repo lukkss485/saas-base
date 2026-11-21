@@ -99,6 +99,30 @@ CREATE TABLE IF NOT EXISTS important_days (
   UNIQUE (user_id, day)
 );  
 
+CREATE TABLE IF NOT EXISTS activity_sessions (
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  client_session_id UUID NOT NULL,
+  started_at TIMESTAMPTZ NOT NULL,
+  ended_at TIMESTAMPTZ NOT NULL,
+  duration_seconds INT NOT NULL CHECK (duration_seconds BETWEEN 0 AND 86400),
+  distance_meters DOUBLE PRECISION NOT NULL DEFAULT 0 CHECK (distance_meters >= 0),
+  steps INT NOT NULL DEFAULT 0 CHECK (steps >= 0),
+  calories_kcal DOUBLE PRECISION,
+  average_heart_rate INT,
+  max_heart_rate INT,
+  source TEXT NOT NULL CHECK (source IN ('gps', 'healthkit', 'bluetooth', 'mixed')),
+  route JSONB NOT NULL DEFAULT '[]'::jsonb,
+  heart_rate_samples JSONB NOT NULL DEFAULT '[]'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (user_id, client_session_id),
+  CHECK (ended_at >= started_at),
+  CHECK (average_heart_rate IS NULL OR average_heart_rate BETWEEN 1 AND 250),
+  CHECK (max_heart_rate IS NULL OR max_heart_rate BETWEEN 1 AND 250)
+);
+CREATE INDEX IF NOT EXISTS activity_sessions_user_started_idx
+  ON activity_sessions (user_id, started_at DESC);
+
 CREATE TABLE IF NOT EXISTS project_pages (
   id SERIAL PRIMARY KEY,
   project_id INT REFERENCES projects(id) ON DELETE CASCADE,

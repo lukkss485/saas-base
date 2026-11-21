@@ -1,0 +1,14 @@
+{
+  "name": "@nt-life/glass-three-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Optional Three.js Liquid Glass surface renderer for the NT-life Glass UI Kit",
+  "peerDependencies": {
+    "three": "^0.187.0",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.187.0"
+  }
+}

@@ -9,7 +9,7 @@ export const appleTokens : globaltypes = {
   },
 
   color: {
-    dark: {
+    dark: { 
       // Superfícies e textos semânticos (HIG Dark Mode)
       primary: '#000000',          // systemBackground (base)
       secondary: '#1C1C1E',        // secondarySystemBackground (elevated)

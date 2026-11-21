@@ -66,7 +66,7 @@ const routes: RouteRecordRaw[] = [
     path: "/ui-kit",
     name: "ui-kit",
     component: () => import("@/views/UiKit.vue"),
-    meta: { private: true },
+    meta: { private: false },
   },
 ];
 
